@@ -8,4 +8,3 @@ def insertion_sort(arr):
         else:
             arr[j+1] = key
     return arr
-
