@@ -1,15 +1,13 @@
+#!/usr/bin/env python3
+
 import numpy as np
+import sys
 import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
 from insertion_sort import insertion_sort
-
-plt.rcParams["figure.figsize"] = (12, 8)
-plt.rcParams["font.size"] = 16
-FPS = 30.0
-N = 100
-arr = np.round(np.linspace(0, 1000, N))
-np.random.seed(0)
-np.random.shuffle(arr)
+from quick_sort import quick_sort
+from bubble_sort import bubble_sort
+from selection_sort import selection_sort
 
 class TrackedArray():
 
@@ -47,12 +45,52 @@ class TrackedArray():
     def __len__(self):
         return self.arr.__len__()
 
+args = sys.argv
+plt.rcParams["figure.figsize"] = (12, 8)
+plt.rcParams["font.size"] = 16
+plt.style.use('dark_background')
+FPS = 30.0
+N = 20
+arr = np.round(np.linspace(0, 1000, N))
+np.random.seed(0)
+np.random.shuffle(arr)
 arr = TrackedArray(arr)
-sorted_arr = insertion_sort(arr)
+
+def help():
+    print("Usage:")
+    print("python main.py [name]")
+    print("""Names: 
+          insertion
+          quick
+          bubble
+          selection""")
+    exit()
+
+if len(args) > 2:
+    print("Error")
+    help()
+elif "quick" in args:
+    sorted_arr = quick_sort(0, len(arr) - 1, arr)
+    sorter = "Quick Sort"
+elif "insertion" in args:
+    sorted_arr = insertion_sort(arr)
+    sorter = "Insertion Sort"
+elif "bubble" in args:
+    sorted_arr = bubble_sort(arr)
+    sorter = "Bubble Sort"
+elif "selection" in args:
+    sorted_arr = selection_sort(arr)
+    sorter = "Selection Sort"
+elif "help" in args:
+    help()
+else:
+    print("Error")
+    help()
+
 fig, ax = plt.subplots()
 fig.canvas.toolbar.pack_forget()
 container = ax.bar(np.arange(0, len(sorted_arr), 1), sorted_arr, align="edge", width=0.8)
-ax.set(xlabel="Index", ylabel="Value", title="Insertion Sort")
+ax.set(xlabel="Index", ylabel="Value", title=sorter)
 txt = ax.text(0, 1000, "")
 
 def update(frame):
