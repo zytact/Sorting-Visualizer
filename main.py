@@ -87,8 +87,8 @@ else:
     print("Error")
     help()
 
+plt.rcParams['toolbar'] = 'None'
 fig, ax = plt.subplots()
-fig.canvas.toolbar.pack_forget()
 container = ax.bar(np.arange(0, len(sorted_arr), 1), sorted_arr, align="edge", width=0.8)
 ax.set(xlabel="Index", ylabel="Value", title=sorter)
 txt = ax.text(0, 1000, "")
